@@ -21,6 +21,7 @@ const PORT = process.env.PORT || 8800;
 dbConnection();
 
 // middlenames
+app.use(express.json());
 app.use(cors());
 app.use(xss());
 app.use(mongoSanitize());

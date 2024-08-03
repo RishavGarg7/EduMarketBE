@@ -1,41 +1,35 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 
-//schema
-const userSchema = new mongoose.Schema(
-  {
-    firstName: {
-      type: String,
-      required: [true, "First Name is Required!"],
-    },
-    lastName: {
-      type: String,
-      required: [true, "Last Name is Required!"],
-    },
-    email: {
-      type: String,
-      required: [true, " Email is Required!"],
-      unique: true,
-      validate: validator.isEmail,
-    },
-    password: {
-      type: String,
-      required: [true, "Password is Required!"],
-      minlength: [6, "Password length should be greater than 6 character"],
-      select: true,
-    },
-    accountType: { type: String, default: "seeker" },
-    contact: { type: String },
-    location: { type: String },
-    profileUrl: { type: String },
-    cvUrl: { type: String },
-    jobTitle: { type: String },
-    about: { type: String },
+const userSchema = new Schema({
+  firstName: {
+    type: String,
+    required: [true, "First Name is required"],
   },
-  { timestamps: true }
-);
+  lastName: {
+    type: String,
+    required: [true, "Last Name is required"],
+  },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    unique: true,
+    validate: validator.isEmail,
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [6, "Password must be at least"],
+    select: true,
+  },
+  contact: { type: String },
+  location: { type: String },
+  about: { type: String },
+  profileUrl: { type: String },
+  projectPosts: [{ type: Schema.Types.ObjectId, ref: "Projects" }],
+});
 
 // middelwares
 userSchema.pre("save", async function () {

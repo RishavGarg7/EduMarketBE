@@ -1,19 +1,23 @@
-import express from "express";
-import userAuth from "../middlewares/authMiddleware.js";
-import { getApplications, getUser, getUserDetails, updateUser } from "../controllers/userController.js";
-
+import express from 'express'
+import { getUsers, getUserById, getUserProjectListing, getUserProfile, register, signIn, updateUserProfile } from '../controllers/UserController.js';
+import userAuth from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
-// GET user
-router.post("/get-user", userAuth, getUser);
+router.post('/register',register)
+router.post('/login',signIn)
 
-// UPDATE USER || PUT
-router.put("/update-user", userAuth, updateUser);
+router.post('/get-user-profile',userAuth,getUserProfile);
+router.post('/get-user-projectlisting',userAuth,getUserProjectListing);
+router.get('/',getUsers);
+router.get('/get-user/:id',getUserById);
 
-router.get("/applied-jobs",userAuth,getApplications)
+router.put('/update-user',userAuth,updateUserProfile);
 
-//Seeker Details
+// router.get('/jobs/:id',userAuth,viewApplications);
 
-router.get("/get-user-details/:id",getUserDetails)
 
 export default router;
+
+
+
+
