@@ -31,8 +31,8 @@ export const payProduct = async (req, res) => {
         payment_method: "paypal",
       },
       redirect_urls: {
-        return_url: "http://localhost:8800/api-v1/payment/success",
-        cancel_url: "http://localhost:8800/api-v1/payment/cancel",
+        return_url: "https://edumarketbe.onrender.com/api-v1/payment/success",
+        cancel_url: "https://edumarketbe.onrender.com/api-v1/payment/cancel",
       },
       transactions: [
         {
@@ -101,7 +101,7 @@ export const successPage = async (req, res) => {
           const ParsedResponse = JSON.parse(response);
           // console.log(ParsedResponse);
           // alert("Success");
-          return res.redirect('http://localhost:5173/success');
+          return res.redirect('https://edumarket.onrender.com/success');
         }
       }
     );
