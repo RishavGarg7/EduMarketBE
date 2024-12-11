@@ -24,7 +24,7 @@ let proprice = 0;
 
 export const payProduct = async (req, res) => {
   const { name, price } = req.body;
-  proprice = (price/84.80).toFixed(2);
+  proprice = (price / 84.8).toFixed(2);
   try {
     const create_payment_json = {
       intent: "sale",
@@ -61,11 +61,13 @@ export const payProduct = async (req, res) => {
       if (error) {
         throw error;
       } else {
-        for(let i=0; i<payment?.links?.length; i++){
-          if(payment?.links[i]?.rel === 'approval_url'){
-            res.send(payment?.links[i]?.href);
-          }
-        }
+        let data = payment;
+        res.json(data);
+        // for (let i = 0; i < payment?.links?.length; i++) {
+        //   if (payment?.links[i]?.rel === "approval_url") {
+        //     res.send(payment?.links[i]?.href);
+        //   }
+        // }
       }
     });
   } catch (error) {
@@ -103,7 +105,7 @@ export const successPage = async (req, res) => {
           const ParsedResponse = JSON.parse(response);
           // console.log(ParsedResponse);
           // alert("Success");
-          return res.redirect('https://edumarket.onrender.com/success');
+          return res.redirect("https://edumarket.onrender.com/success");
         }
       }
     );
