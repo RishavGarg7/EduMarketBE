@@ -20,10 +20,11 @@ paypal.configure({
 
 // }
 
+let proprice = 0;
+
 export const payProduct = async (req, res) => {
-  // console.log(req.name);
-  // console.log(req.price);
   const { name, price } = req.body;
+  proprice = (price/84.80).toFixed(2);
   try {
     const create_payment_json = {
       intent: "sale",
@@ -41,7 +42,7 @@ export const payProduct = async (req, res) => {
               {
                 name: name,
                 sku: "001",
-                price: '100',
+                price: proprice,
                 currency: "USD",
                 quantity: 1,
               },
@@ -49,7 +50,7 @@ export const payProduct = async (req, res) => {
           },
           amount: {
             currency: "USD",
-            total: '100',
+            total: proprice,
           },
           description: "This is payment description.",
         },
@@ -60,8 +61,11 @@ export const payProduct = async (req, res) => {
       if (error) {
         throw error;
       } else {
-        let data = payment;
-        res.json(data);
+        for(let i=0; i<payment.links.length; i++){
+          if(payment.links[i].rel === 'approval_url'){
+            res.send(payment.links[i].href);
+          }
+        }
       }
     });
   } catch (error) {
@@ -71,10 +75,9 @@ export const payProduct = async (req, res) => {
 
 export const successPage = async (req, res) => {
   try {
-    console.log("Request Data:",req);
+    console.log("Request Data:", req);
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
-    // const price = req.query.price;
 
     const execute_payment_json = {
       payer_id: payerId,
@@ -82,12 +85,11 @@ export const successPage = async (req, res) => {
         {
           amount: {
             currency: "USD",
-            total: '100',
+            total: proprice,
           },
         },
       ],
     };
-    // console.log(execute_payment_json.transactions[0]);
 
     paypal.payment.execute(
       paymentId,
@@ -99,9 +101,7 @@ export const successPage = async (req, res) => {
         } else {
           const response = JSON.stringify(payment);
           const ParsedResponse = JSON.parse(response);
-          // console.log(ParsedResponse);
-          // alert("Success");
-          return res.redirect('http://localhost:5173/success');
+          return res.redirect("http://localhost:5173/success");
         }
       }
     );
@@ -113,7 +113,6 @@ export const successPage = async (req, res) => {
 export const cancelPage = async (req, res) => {
   try {
     alert("Cancel");
-    // res.render('cancel');
   } catch (error) {
     console.log(error.message);
   }
