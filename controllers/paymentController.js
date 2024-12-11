@@ -61,9 +61,9 @@ export const payProduct = async (req, res) => {
       if (error) {
         throw error;
       } else {
-        for(let i=0; i<payment.links.length; i++){
-          if(payment.links[i].rel === 'approval_url'){
-            res.send(payment.links[i].href);
+        for(let i=0; i<payment?.links?.length; i++){
+          if(payment?.links[i]?.rel === 'approval_url'){
+            res.send(payment?.links[i]?.href);
           }
         }
       }
